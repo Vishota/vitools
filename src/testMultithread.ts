@@ -1,6 +1,5 @@
 import cluster from 'cluster';
 import { cpus } from "os";
-import { delay } from './common';
 
 export async function testMultithread(
     callback: Function,
@@ -20,27 +19,23 @@ export async function testMultithread(
         for (let i = 0; i < cpus().length; i++) {
             workers.push(
                 cluster.fork({
-                    WAITFOR: time
+                    EXECTIME: time
                 })
             );
             console.log(`${workers.length} workers running`);
         }
-        const execTime = new Date().getTime() + options.delay;
-        workers.forEach((w) => {
-            w.send(execTime);
-        })
     }
     else {
-        let execTime = Infinity;
-        process.on('message', (message: number) => {
-            execTime = message;
-            console.log(`Waiting for ${execTime} (${execTime - new Date().getTime()} ms left)`);
-        });
-        while (new Date().getTime() < execTime) await delay(0);
+        const execTime = parseInt( process.env.EXECTIME + '' );
+        if(isNaN(execTime)) {
+            throw 'No EXECTIME provided';
+        }
+        const timeLeft = execTime - new Date().getTime();
+        if(timeLeft <= 0) {
+            console.warn(`Delay should be longer: the flow is ${-timeLeft} ms late`);
+        }
+        console.log(`Waiting for ${execTime} (${timeLeft} ms left)`);
+        while (new Date().getTime() < execTime);
         callback();
     }
 }
-
-testMultithread(() => {
-    console.log(new Date().getTime());
-})
