@@ -5,7 +5,7 @@ export async function testMultithread(
     callback: Function,
     options = {
         delay: 10000,
-        threadCount: cpus().length,
+        threadCount: cpus().length - 1,
         logs: true
     }
 ) {
@@ -16,14 +16,14 @@ export async function testMultithread(
 
         let workers: ReturnType<typeof cluster.fork>[] = [];
 
-        for (let i = 0; i < cpus().length; i++) {
+        for (let i = 0; i < options.threadCount; i++) {
             workers.push(
                 cluster.fork({
                     EXECTIME: time
                 })
             );
             console.log(`${workers.length} workers running`);
-        }
+        };
     }
     else {
         const execTime = parseInt( process.env.EXECTIME + '' );
