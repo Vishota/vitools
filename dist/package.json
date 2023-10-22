@@ -1,6 +1,6 @@
 {
-  "name": "vi_vitools",
-  "version": "1.0.0",
+  "name": "vitools",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,10 +19,8 @@
   },
   "homepage": "https://github.com/Vishota/vitools#readme",
   "devDependencies": {
+    "@types/node": "^20.8.7",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "@types/node": "^20.6.0"
   },
   "typesVersions": {
     ">=4.2": {
