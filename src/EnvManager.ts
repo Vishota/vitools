@@ -6,7 +6,7 @@ export default class EnvManager<const T extends Record<string, string>> {
         this._defaults = defaults;
         this._env = process.env as T;
     }
-    get(varname: keyof typeof this._defaults) {
+    get(varname: keyof T) {
         if (!(varname in this._defaults)) throw `Env var ${varname.toString()} is not allowed`;
         return varname in this._env ? this._env[varname.toString()] : this._defaults[varname.toString()]
     }
