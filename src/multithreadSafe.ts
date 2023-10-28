@@ -7,7 +7,7 @@ function getUniqueFunctionHash(func: Function): string {
     return hash;
 }
 
-export function multithreadSafe<T, R extends (...args: any[]) => T>(func: R): (...args:Parameters<typeof func>) => Promise<T> {
+export function multithreadSafe<R extends (...args: any[]) => any>(func: R): (...args:Parameters<typeof func>) => Promise<ReturnType<R>> {
     return async (...args) => {
         const funchash = getUniqueFunctionHash(func)
         await acquire(funchash);
