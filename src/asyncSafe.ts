@@ -1,5 +1,3 @@
-import crypto from 'crypto';
-
 export function asyncSafe<R extends (...args: any[]) => any>(func: R): (...args: Parameters<typeof func>) => Promise<ReturnType<R>> {
     let busy = false;
     const safe: ReturnType<typeof asyncSafe> = async (...args) => {
